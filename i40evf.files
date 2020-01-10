@@ -1,0 +1,4 @@
+%defattr(644,root,root,755)
+/lib/modules/%2-%1
+/etc/depmod.d/i40evf.conf
+/usr/share/doc/kmod-i40evf/greylist.txt
