@@ -1,6 +1,6 @@
 %define kmod_name		i40evf
 %define kmod_driver_version	1.5.10_k
-%define kmod_rpm_release	1
+%define kmod_rpm_release	2
 %define kmod_git_hash		40b15b9e0eb1b331906d70b561974ebbdf49730d
 %define kmod_kernel_version	3.10.0-327.el7
 %define kernel_version		3.10.0-327.el7
@@ -17,6 +17,8 @@ Source4:	find-provides.ksyms
 Source5:	kmodtool
 Source6:	i40evf.preamble
 Source7:	symbols.greylist-x86_64
+Source8:	symbols.greylist-ppc64
+Source9:	symbols.greylist-ppc64le
 
 Patch0:		i40evf.patch
 
@@ -32,8 +34,8 @@ Group:		System/Kernel
 License:	GPLv2
 URL:		http://www.kernel.org/
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-BuildRequires:	%kernel_module_package_buildreqs
-ExclusiveArch:  x86_64
+BuildRequires:	kernel-devel = %kmod_kernel_version kmod
+ExclusiveArch:  x86_64 ppc64 ppc64le
 
 
 # Build only for standard kernel variant(s); for debug packages, append "debug"
@@ -49,7 +51,7 @@ ExclusiveArch:  x86_64
 set -- *
 mkdir source
 mv "$@" source/
-cp %{SOURCE7} source/
+cp %{SOURCE7} %{SOURCE8} %{SOURCE9} source/
 mkdir obj
 
 %build
@@ -104,6 +106,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Jul 19 2016 Petr Oros <poros@redhat.com> 1.5.10_k 2
+- Build i40evf 1.5.10_k for ppc64/ppc64le arch
+- Resolves: #1347173
+
 * Wed Jun 08 2016 Petr Oros <poros@redhat.com> 1.5.10_k 1
 - Update i40evf to 1.5.10_k
 - Resolves: #1347173
